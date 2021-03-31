@@ -1,0 +1,74 @@
+
+@{
+    ViewData["Title"] = "Verify";
+}
+
+<div class="price_table">
+    <div class="package package_free">
+            <h2>@ViewBag.Name</h2>
+            <div class="htmldesc">
+                @Html.Raw(ViewBag.HtmlDescription)
+            </div>
+            
+            <div class="price">$<div class="big">@ViewBag.BasePrice</div>/mo</div>
+        </div>
+    
+    <div class="package package_free ms-auto" style="padding:20px">
+        <h3>Verifying (+@ViewBag.code) @ViewBag.mobile</h3>
+        <p>Enter the 6 digit Verification code sent to your phone</p>
+        <form action="/Home/Payment" method="POST">
+        <input type="hidden" name="id" value="@ViewBag.id" />
+        <input type="hidden" name="customer" value="@ViewBag.customer" />
+        <input type="hidden" name="mobile" value="@ViewBag.mobile" />
+        <div class="form-row">
+                <div class="form-group col-md-2">
+                <input type="text" pattern="[0-9]" maxlength="1" class="form-control text-center" id="inputmnum1" name="inputmnum1" required autocomplete="off">
+                </div>
+                <div class="form-group col-md-2">
+                <input type="text" pattern="[0-9]" maxlength="1" class="form-control text-center" id="inputmnum2" name="inputmnum2" required autocomplete="off">
+                </div>
+                <div class="form-group col-md-2">
+                <input type="text" pattern="[0-9]" maxlength="1" class="form-control text-center" id="inputmnum3" name="inputmnum3" required autocomplete="off">
+                </div>
+                <div class="form-group col-md-2">
+                <input type="text" pattern="[0-9]" maxlength="1" class="form-control text-center" id="inputmnum4" name="inputmnum4" required autocomplete="off">
+                </div>
+                <div class="form-group col-md-2">
+                <input type="text" pattern="[0-9]" maxlength="1" class="form-control text-center" id="inputmnum5" name="inputmnum5" required autocomplete="off">
+                </div>
+                <div class="form-group col-md-2">
+                <input type="text" pattern="[0-9]" maxlength="1" class="form-control text-center" id="inputmnum6" name="inputmnum6" required autocomplete="off">
+                </div>
+        </div>
+        <div class="text-center" >
+        <a href="#" class="btn btn-secondary">Resend Code</a>
+        </div>
+
+        <div class="ms-auto" >
+        <a href="/Home/View/@ViewBag.id" class="btn btn-secondary float-left">Back</a>
+        <button type="submit" class="btn btn-primary float-right">Next</button>
+        </div>
+        </form>
+
+</div>
+
+<script>
+    $("input").keyup(function(){
+        var num = $(this).val();
+        if ($.isNumeric(num))
+        {
+            var id = $(this).attr('id').replace("inputmnum","");
+            if ((id != 6))
+            {
+                var nextnum = parseInt(id)+1;
+                $("#inputmnum"+ nextnum).focus();
+            }
+        }
+        else
+        {
+            $(this).val("");
+            $(this).focus();
+        }
+
+    });
+</script>

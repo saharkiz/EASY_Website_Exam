@@ -1,0 +1,47 @@
+
+@{
+    ViewData["Title"] = "Review";
+}
+
+<div class="price_table">
+    <div class="package package_free">
+            <h2>@ViewBag.Name</h2>
+            <div class="htmldesc">
+                @Html.Raw(ViewBag.HtmlDescription)
+            </div>
+            
+            <div class="price">$<div class="big">@ViewBag.BasePrice.ToString( "#.##" )</div>/mo</div>
+        </div>
+    
+    <div class="package package_free" style="padding:20px">
+        <form action="/Home/Done" method="POST">
+        <input type="hidden" name="id" value="@ViewBag.id" />
+        <input type="hidden" name="customer" value="@ViewBag.customer" />
+        <div class="form-group">
+            <label for="inputCCName">Subscription</label>
+            EASY @ViewBag.Name
+        </div>
+        <div class="form-group">
+            <label for="inputCCNum">Start Date</label>
+            @ViewBag.date
+        </div>
+        <div class="form-group">
+            <label for="inputCCNum">Card Number</label>
+            @ViewBag.cc
+        </div>
+
+        <div class="form-group">
+            <label for="inputCCNum">Price</label>
+            $@ViewBag.BasePrice.ToString( "#.##" )/Monthly
+        </div>
+        <div class="form-group">
+            <label for="inputmonth">I agree to the terms & conditions</label>
+            <input type="checkbox" id="inputagree" name="inputagree">
+        </div>
+        <div class="ms-auto" >
+        <a href="/Home/View/@ViewBag.id" class="btn btn-secondary float-left">Back</a>
+        <button type="submit" class="btn btn-primary float-right">Next</button>
+        </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,45 @@
+
+@{
+    ViewData["Title"] = "Payment";
+}
+
+<div class="price_table">
+    <div class="package package_free">
+            <h2>@ViewBag.Name</h2>
+            <div class="htmldesc">
+                @Html.Raw(ViewBag.HtmlDescription)
+            </div>
+            
+            <div class="price">$<div class="big">@ViewBag.BasePrice.ToString( "#.##" )</div>/mo</div>
+        </div>
+    
+    <div class="package package_free" style="padding:20px">
+        <form action="/Home/Review" method="POST">
+        <input type="hidden" name="id" value="@ViewBag.id" />
+        <input type="hidden" name="customer" value="@ViewBag.customer" />
+        <div class="form-group">
+            <label for="inputCCName">Card Holder Name</label>
+            <input type="text" class="form-control" id="inputCCName" name="inputCCName" placeholder="Jane Doe" required autocomplete="off">
+        </div>
+        <div class="form-group">
+            <label for="inputCCNum">Card Number</label>
+            <input type="text" class="form-control" id="inputCCNum" name="inputCCNum" placeholder="4111-1111-1111-1111" required autocomplete="off">
+        </div>
+        <div class="form-row">
+    <div class="form-group col-md-6">
+      <label for="inputyear">Year</label>
+      <input type="number" class="form-control" id="inputyear" name="inputyear" pattern="{1}[0-9]{11,14}" placeholder=" 2021" required autocomplete="off">
+    
+    </div>
+    <div class="form-group col-md-6">
+      <label for="inputmonth">Month</label>
+      <input type="number" class="form-control" id="inputmonth" name="inputmonth" pattern="{1}[0-9]{11,14}" placeholder=" 01" required autocomplete="off">
+    </div>
+  </div>
+        <div class="ms-auto" >
+        <a href="/Home/View/@ViewBag.id" class="btn btn-secondary float-left">Back</a>
+        <button type="submit" class="btn btn-primary float-right">Next</button>
+        </div>
+        </form>
+    </div>
+</div>
