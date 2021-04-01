@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Threading.Tasks;
 using EASY.Website.Utility;
 
+using EASY.Website.OTP;
 namespace EASY.Website.Controllers
 {
     [ApiController]
@@ -128,11 +129,9 @@ namespace EASY.Website.Controllers
         [AllowAnonymous]
         public ActionResult cardAdd([FromBody] Dictionary<string, object> obj)
         {
-            int totalLength = obj["inputCCNum"].ToString().Length;
-            string ccnum = "**** " + obj["inputCCNum"].ToString().Substring(totalLength-5,4);
             SqlParameter[] param = {
                     new SqlParameter("@customer",obj["customer"].ToString()),
-                    new SqlParameter("@RedactedReference",ccnum),
+                    new SqlParameter("@RedactedReference",obj["inputCCNum"].ToString()),
                     new SqlParameter("@ExpiryYear",obj["inputyear"].ToString()),
                     new SqlParameter("@ExpiryMonth",obj["inputmonth"].ToString()),
                     new SqlParameter("@PaymentToken","TOKEN")
@@ -143,5 +142,38 @@ namespace EASY.Website.Controllers
                 return Ok(lst2);
         }
     
+    [HttpPost("sendOTP")]
+        [AllowAnonymous]
+        public async Task<IActionResult> sendOTP([FromBody] Dictionary<string, object> obj)
+        {
+            await requestOTP(obj["mobile"].ToString());
+            return Ok();
+        }
+         [HttpPost("validateOTP")]
+        [AllowAnonymous]
+        public async Task<IActionResult> validateOTP([FromBody] Dictionary<string, object> obj)
+        {
+            string otpsuccess = await validateOTP(obj["mobile"].ToString(), obj["otp"].ToString());
+            return Ok(otpsuccess.Trim());
+        }
+
+    private async Task<bool> requestOTP(string mobile)
+        {
+            string tokencall = await Task.Run(() => {
+                return TwilioOTP.sendOTP(mobile);
+            });
+            
+            dynamic json = SimpleJson.DeserializeObject(tokencall);
+            return true;
+        }
+        private async Task<string> validateOTP(string mobile, string otp)
+        {
+            string tokencall = await Task.Run(() => {
+                return TwilioOTP.validateOTP(mobile, otp);
+            });
+            
+            dynamic json = SimpleJson.DeserializeObject(tokencall);
+            return json.status.ToString();
+        }
     }
 }

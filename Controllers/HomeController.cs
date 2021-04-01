@@ -52,9 +52,23 @@ namespace EASY.Website.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
         [HttpGet]
-        [HttpGet("Verify")]
+        [HttpGet("Home")]
+        [HttpGet("Index")]
         [AllowAnonymous]
         public IActionResult Index()
+        {
+            return View("Home");
+        }
+        [HttpGet("Product/{id}")]
+        [AllowAnonymous]
+        public IActionResult ViewitemProduct(string id)
+        {
+            ViewBag.id = id;
+                return View("Product");
+        }
+        [HttpGet("Verify")]
+        [AllowAnonymous]
+        public IActionResult IndexOld()
         {
                 /* //Direct DB
                 SqlParameter[] param = {
@@ -224,19 +238,21 @@ namespace EASY.Website.Controllers
                     ViewBag.HtmlDescription = lst[0].HtmlDescription;
                     ViewBag.id = model.id; //keeping a reference for POST
                     ViewBag.customer = model.customer;
+                    ViewBag.date = DateTime.Now.ToLongDateString();
                 }
-
-                
+                int totalLength = model.inputCCNum.ToString().Length;
+                string ccnum = "**** " + model.inputCCNum.ToString().Substring(totalLength-5,4);
+                ViewBag.cc = ccnum;
                         ProductService ps = new ProductService();
                         object myData = new
                         {
                             customer = model.customer,
-                            inputCCNum = model.inputCCNum,
+                            inputCCNum = ccnum,
                             inputyear =model.inputyear,
                             inputmonth = model.inputmonth
                         };
                         var t = ps.SendCard(appSettings.Value.APIURL,myData);
-                return View("Review?t=" + t);
+                return View("Review" );
             }
             catch(Exception)
             {
@@ -246,7 +262,7 @@ namespace EASY.Website.Controllers
     
     
 
-        [HttpPost("Done/{id}")]
+        [HttpPost("Done")]
         [AllowAnonymous]
         public IActionResult Done([FromForm]FormModel model)
         {

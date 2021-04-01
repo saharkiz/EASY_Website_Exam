@@ -1,0 +1,39 @@
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="price_table" id="vueProductList">
+     
+        <div class="package package_free" v-for="product in productList">
+            <h2>{{ product.Name }} </h2>
+            <div class="htmldesc">
+                {{ product.HtmlDescription }}
+            </div>
+           <div v-if="product.BasePrice  < 200">
+              <div class="price">$<div class="big">{{ product.BasePrice }}</div>/month</div>
+                <a :href="'/Home/Product/' + product.ProductID" class="button">Get Started</a>
+            </div>
+            <div v-else>
+              <div class="price"><div class="big">&nbsp;</div></div>
+                <button type="button" class="button" data-toggle="modal" data-target="#LearnmoreModal">Learn More</button>
+            </div>
+            
+        </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="LearnmoreModal" tabindex="-1" role="dialog" aria-labelledby="LearnmoreModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header"  style="margin:auto;">
+        <h5 class="modal-title" id="LearnmoreModalLabel">Call for Pricing</h5>
+      </div>
+      <div class="modal-body d-flex justify-content-center">
+       (473) 405 2473
+      </div>
+      <div class="modal-footer d-flex justify-content-center">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

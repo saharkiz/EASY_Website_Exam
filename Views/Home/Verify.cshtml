@@ -10,7 +10,7 @@
                 @Html.Raw(ViewBag.HtmlDescription)
             </div>
             
-            <div class="price">$<div class="big">@ViewBag.BasePrice</div>/mo</div>
+            <div class="price">$<div class="big">@ViewBag.BasePrice.ToString( "#.##" )</div>/mo</div>
         </div>
     
     <div class="package package_free ms-auto" style="padding:20px">
